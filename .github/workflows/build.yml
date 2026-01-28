@@ -17,7 +17,7 @@ permissions:
   contents: read
 
 jobs:
-  linux:
+  build:
     runs-on: ${{ matrix.platform.runner }}
     strategy:
       matrix:
@@ -30,11 +30,11 @@ jobs:
             target: aarch64-apple-darwin
         build_profile: ["release"]
     steps:
-      - name: Output rust version for educational purposes
+      - uses: actions/checkout@v4
+      - name: Build
         run: |
           rustup --version
           cargo --version
-      - name: Build
-        run: cargo build --profile ${{ matrix.build_profile }} --target ${{ matrix.platform.target }}
+          cargo build --profile ${{ matrix.build_profile }} --target ${{ matrix.platform.target }}
       - name: Test
         run: cargo test --frozen --profile ${{ matrix.build_profile }} --target ${{ matrix.platform.target }}
