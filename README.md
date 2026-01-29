@@ -27,7 +27,7 @@ levenshtein(a: &String, b: &String) -> i32
   `count_char_diff("abcd", "bfa") = 3` (a and b match; c, d, and f don't).
   The main purpose  of this function is to be a quick early-exit check before running
   the more expensive `levenshtein()` function. The returned value is the minimum distance estimate,
-  i.e. `count_char_diff(a, b) <= levenshtein(a, b)`.
+  i.e. `count_char_diff(a, b) <= 2 * levenshtein(a, b)`.
 
 `levenshtein(a: &String, b: &String) -> i32`
 - Computes the Levenshtein distance for 2 input strings.
