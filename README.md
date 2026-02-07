@@ -50,3 +50,30 @@ levenshtein_utf(a: &String, b: &String) -> i32
 ```bash
 cargo test
 ```
+
+## Performance
+
+**levenshtein()**:
+
+| Charset | Length | Time (µs) |
+| --- | --- | --- |
+| ASCII | 16 | 0.730 ±0.003 |
+| ASCII | 64 | 7.540 ±0.03 |
+| ASCII | 128 | 26.730 ±0.1 |
+| ASCII | 256 | 98.987 ±0.3 |
+| ASCII | 512 | 383.92 ±0.6 |
+| ASCII | 1000 | 1414.7 ±3 |
+| UTF8 | 16 | 2.007 ±0.01 |
+| UTF8 | 64 | 21.510 ±0.1 |
+| UTF8 | 128 | 80.166 ±0.2 |
+| UTF8 | 256 | 305.23 ±2 |
+| UTF8 | 512 | 1650.7 ±100 |
+| UTF8 | 1000 | 31150 ±300 |
+
+* CPU: AMD Ryzen 7 6800H
+
+## Benchmarking
+
+```bash
+cargo bench
+```

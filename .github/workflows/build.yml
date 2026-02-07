@@ -37,4 +37,4 @@ jobs:
           cargo --version
           cargo build --profile ${{ matrix.build_profile }} --target ${{ matrix.platform.target }}
       - name: Test
-        run: cargo test --frozen --profile ${{ matrix.build_profile }} --target ${{ matrix.platform.target }}
+        run: cargo test --locked --profile ${{ matrix.build_profile }} --target ${{ matrix.platform.target }}
