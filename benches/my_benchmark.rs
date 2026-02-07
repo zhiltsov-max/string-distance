@@ -1,4 +1,4 @@
-use criterion::{criterion_group, criterion_main, Criterion};
+use criterion::{criterion_group, criterion_main, BatchSize, Criterion};
 use rand;
 use std::hint::black_box;
 use string_distance;
@@ -8,7 +8,7 @@ fn generate_random_string<R: rand::Rng, D: rand::distr::Distribution<char>>(
     rng: &mut R,
     distribution: &D,
 ) -> String {
-    let mut s: String = String::with_capacity(length * 4).try_into().unwrap();
+    let mut s = String::with_capacity(length * 4);
     for _ in 0..length {
         s.push(rng.sample(distribution));
     }
@@ -42,12 +42,16 @@ fn criterion_benchmark(c: &mut Criterion) {
                 length = length
             ),
             |b| {
-                b.iter(|| {
-                    string_distance::levenshtein(
-                        black_box(&generate_random_string(length, &mut rng, &ascii_chars)),
-                        black_box(&generate_random_string(length, &mut rng, &ascii_chars)),
-                    )
-                })
+                b.iter_batched(
+                    || {
+                        return (
+                            generate_random_string(length, &mut rng, &ascii_chars),
+                            generate_random_string(length, &mut rng, &ascii_chars),
+                        );
+                    },
+                    |v| string_distance::levenshtein(black_box(&v.0), black_box(&v.1)),
+                    BatchSize::SmallInput,
+                )
             },
         );
     }
@@ -60,12 +64,16 @@ fn criterion_benchmark(c: &mut Criterion) {
                 length = length
             ),
             |b| {
-                b.iter(|| {
-                    string_distance::levenshtein(
-                        black_box(&generate_random_string(length, &mut rng, &utf8_chars)),
-                        black_box(&generate_random_string(length, &mut rng, &utf8_chars)),
-                    )
-                })
+                b.iter_batched(
+                    || {
+                        return (
+                            generate_random_string(length, &mut rng, &utf8_chars),
+                            generate_random_string(length, &mut rng, &utf8_chars),
+                        );
+                    },
+                    |v| string_distance::levenshtein(black_box(&v.0), black_box(&v.1)),
+                    BatchSize::SmallInput,
+                )
             },
         );
     }
