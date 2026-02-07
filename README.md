@@ -56,7 +56,7 @@ cargo test
 **levenshtein()**:
 
 | Charset | Length | Time (µs) |
-| - | - | - |
+| --- | --- | --- |
 | ASCII | 16 | 0.730 ±0.003 |
 | ASCII | 64 | 7.540 ±0.03 |
 | ASCII | 128 | 26.730 ±0.1 |
